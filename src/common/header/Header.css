@@ -1,0 +1,12 @@
+.app-header{
+    background-color:#263238;
+    height: 42px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.app-logo{
+    float: left;
+    margin-left: 12px;
+
+}    

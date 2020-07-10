@@ -1,0 +1,22 @@
+.login-card{
+    width: 400px;
+    height: 300px;
+    margin-top: 16px;
+}
+.login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-control{
+    padding: 30px;
+}
+.displayNone{
+    display: none;
+}
+.red{
+    color: red;
+}
+.displayFormHelperText{
+   display: '';
+}
