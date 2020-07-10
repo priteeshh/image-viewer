@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Header from '../../common/header/Header'
 import './Login.css';
+import { Link } from 'react-router-dom';
 
 
 class Login extends Component {
@@ -31,6 +32,7 @@ class Login extends Component {
             this.setState({ incorrectCredintials: 'displayNone' })
             this.setState({ userNameRequired: 'displayNone' })
             this.setState({ passwordRequired: 'displayNone' })
+            this.props.history.push("/home");
         }else{
             if(this.state.username === '' || this.state.password === ''){
                 this.state.username === '' ? this.setState({ userNameRequired: 'displayFormHelperText' }) : this.setState({ userNameRequired: 'displayNone' })
@@ -70,7 +72,9 @@ class Login extends Component {
                                     <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
                                     <FormHelperText className={this.state.incorrectCredintials}><span className="red">Incorrect username and/or password</span></FormHelperText>
                                 </FormControl><br /><br />
+                                <Link to="/home">
                                 <Button variant="contained" color="primary" onClick={this.loginHandler}>LOGIN</Button>
+                                </Link>
                             </CardContent><br/>
                         </Card>
                     </div>
