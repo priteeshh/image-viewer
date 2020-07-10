@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Login from './screens/login/Login';
 import 'fontsource-roboto';
+import App from './screens/App'
 ReactDOM.render(
-  <Login />,
+  <App />,
   document.getElementById('root')
 );
