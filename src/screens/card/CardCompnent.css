@@ -1,0 +1,18 @@
+
+.root{
+    width: 500px;
+    margin-top: 10px;
+  }
+.mediaa {
+    width: 100%;
+  }
+.hashtag{
+      color: darkblue;
+  }
+.comment-Container{
+  display: flex;
+  justify-content: space-between;
+}
+.commentText{
+  width: 370px;
+}
