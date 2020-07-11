@@ -6,7 +6,7 @@ class Login extends Component {
     render(){
         return(
             <div>
-                <Header></Header>
+                <Header searchBarEnable = "true"></Header>
             </div>
         )
     }
