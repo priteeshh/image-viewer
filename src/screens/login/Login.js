@@ -18,7 +18,7 @@ class Login extends Component {
             password: '',
             userNameRequired: 'displayNone',
             passwordRequired: 'displayNone',
-            incorrectCredintials : 'displayNone',
+            incorrectCredintials: 'displayNone',
         };
     }
     //Login Handler
@@ -26,17 +26,17 @@ class Login extends Component {
         let username = "admin";
         let password = "admin";
         //Username and password validations
-        if(this.state.username === username && this.state.password === password){
+        if (this.state.username === username && this.state.password === password) {
             this.setState({ incorrectCredintials: 'displayNone' })
             this.setState({ userNameRequired: 'displayNone' })
             this.setState({ passwordRequired: 'displayNone' })
             this.props.history.push("/home");
-        }else{
-            if(this.state.username === '' || this.state.password === ''){
+        } else {
+            if (this.state.username === '' || this.state.password === '') {
                 this.state.username === '' ? this.setState({ userNameRequired: 'displayFormHelperText' }) : this.setState({ userNameRequired: 'displayNone' })
                 this.state.password === '' ? this.setState({ passwordRequired: 'displayFormHelperText' }) : this.setState({ passwordRequired: 'displayNone' })
                 this.setState({ incorrectCredintials: 'displayNone' })
-            }else{
+            } else {
                 this.setState({ incorrectCredintials: 'displayFormHelperText' })
                 this.setState({ userNameRequired: 'displayNone' })
                 this.setState({ passwordRequired: 'displayNone' })
@@ -47,7 +47,7 @@ class Login extends Component {
     changeHandler = (e) => {
         e.target.id === 'username' && this.setState({ username: e.target.value })
         e.target.id === 'password' && this.setState({ password: e.target.value })
-    }   
+    }
     render() {
         return (
             <div>
@@ -58,7 +58,7 @@ class Login extends Component {
                             <CardContent>
                                 <Typography variant="h5">
                                     LOGIN
-                                </Typography><br/>
+                                </Typography><br />
                                 <FormControl required fullWidth>
                                     <InputLabel htmlFor="username">Username</InputLabel>
                                     <Input id="username" type="text" username={this.state.username} onChange={this.changeHandler}></Input>
@@ -71,7 +71,7 @@ class Login extends Component {
                                     <FormHelperText className={this.state.incorrectCredintials}><span className="red">Incorrect username and/or password</span></FormHelperText>
                                 </FormControl><br /><br />
                                 <Button variant="contained" color="primary" onClick={this.loginHandler}>LOGIN</Button>
-                            </CardContent><br/>
+                            </CardContent><br />
                         </Card>
                     </div>
                 </div>

@@ -14,16 +14,16 @@ class Header extends Component {
         super();
         this.state = {
             anchorEl: '',
-            OpenMenu : false,
+            OpenMenu: false,
         };
     }
     clickHandle = (event) => {
-        this.setState({anchorEl : event.currentTarget})
-        this.setState({OpenMenu : true})
+        this.setState({ anchorEl: event.currentTarget })
+        this.setState({ OpenMenu: true })
 
     }
     handleClose = (event) => {
-        this.setState({OpenMenu : false})
+        this.setState({ OpenMenu: false })
     }
     render() {
         return (
@@ -45,13 +45,11 @@ class Header extends Component {
                                 keepMounted
                                 open={this.state.OpenMenu}
                                 onClose={this.handleClose}
-                                
+
                             >
                                 <MenuItem onClick={this.handleClose}>My Account</MenuItem>
                                 <Divider variant="middle" />
-                                {/* <Link to="/"> */}
                                 <MenuItem onClick={this.props.clickLogout}>Logout</MenuItem>
-                                {/* </Link> */}
                             </Menu>
                         </div> : ""
                     }

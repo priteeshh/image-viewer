@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import './Home.css';
 import Header from '../../common/header/Header'
+import Card from '../card/CardCompnent';
 
-class Login extends Component {
+
+class Home extends Component {
     logoutHandler = () => {
         this.props.history.push("/");
     }
-    render(){
-        return(
+    render() {
+        return (
             <div>
-                <Header searchBarEnable = "true" clickLogout = {this.logoutHandler}></Header>
+                <Header searchBarEnable="true" clickLogout={this.logoutHandler}></Header>
+                <div className="container">
+                    <Card></Card>
+                    <Card></Card>
+                    <Card></Card>
+                    <Card></Card>
+                </div>
             </div>
         )
     }
 }
-export default Login;
+export default Home;
