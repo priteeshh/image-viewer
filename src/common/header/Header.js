@@ -49,7 +49,9 @@ class Header extends Component {
                             >
                                 <MenuItem onClick={this.handleClose}>My Account</MenuItem>
                                 <Divider variant="middle" />
-                                <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                {/* <Link to="/"> */}
+                                <MenuItem onClick={this.props.clickLogout}>Logout</MenuItem>
+                                {/* </Link> */}
                             </Menu>
                         </div> : ""
                     }
