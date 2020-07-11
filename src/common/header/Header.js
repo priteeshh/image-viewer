@@ -29,10 +29,10 @@ class Header extends Component {
         return (
             <div>
                 <header className="app-header">
-                    <span className="app-logo">Image Viewer</span>
-                    {this.props.searchBarEnable === "true" ?
+                    <span className={this.props.logoClass} onClick={this.props.clickHome}>Image Viewer</span>
+                    {(this.props.page === "home")||(this.props.page === "profile") ?
                         <div className="search-container">
-                            {this.props.searchEnable === "true" ?
+                            {this.props.page === "home" ?
                                 <div className="search-bar">
                                     <SearchIcon className="searchIcon"></SearchIcon>
                                     <Input className="search" id="username" type="text" username="username" placeholder="Search..." disableUnderline={true}></Input>
@@ -48,7 +48,7 @@ class Header extends Component {
                                 open={this.state.OpenMenu}
                                 onClose={this.handleClose}
                             >
-                                {this.props.searchEnable === "true" ?
+                                {this.props.page === "home" ?
                                     <div>
                                         <MenuItem onClick={this.props.clickProfile}>My Account</MenuItem>
                                         <Divider variant="middle" />

@@ -7,10 +7,13 @@ class Profile extends Component {
     logoutHandler = () => {
         this.props.history.push("/");
     }
+    homeHandler = (e) => {
+        this.props.history.push("/home");
+    }
     render() {
         return (
             <div>
-                <Header searchBarEnable="true" searchEnable="false" clickLogout={this.logoutHandler}></Header>
+                <Header page="profile" logoClass = "app-logo-profile" clickLogout={this.logoutHandler} clickHome={this.homeHandler}></Header>
             </div>
         )
     }

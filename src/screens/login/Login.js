@@ -51,7 +51,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Header></Header>
+                <Header logoClass = "app-logo-home"></Header>
                 <div className="login">
                     <div className="login-card">
                         <Card className="form-control">

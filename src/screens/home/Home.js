@@ -14,7 +14,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <Header searchBarEnable="true" searchEnable="true" clickLogout={this.logoutHandler} clickProfile={this.profilePageHandler}></Header>
+                <Header page="home" logoClass = "app-logo-home" clickLogout={this.logoutHandler} clickProfile={this.profilePageHandler}></Header>
                 <div className="container">
                     <Card></Card>
                     <Card></Card>
