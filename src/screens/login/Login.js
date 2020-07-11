@@ -9,8 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Header from '../../common/header/Header'
 import './Login.css';
-import { Link } from 'react-router-dom';
-
 
 class Login extends Component {
     constructor() {
@@ -72,9 +70,7 @@ class Login extends Component {
                                     <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
                                     <FormHelperText className={this.state.incorrectCredintials}><span className="red">Incorrect username and/or password</span></FormHelperText>
                                 </FormControl><br /><br />
-                                <Link to="/home">
                                 <Button variant="contained" color="primary" onClick={this.loginHandler}>LOGIN</Button>
-                                </Link>
                             </CardContent><br/>
                         </Card>
                     </div>
