@@ -8,10 +8,13 @@ class Home extends Component {
     logoutHandler = () => {
         this.props.history.push("/");
     }
+    profilePageHandler = () => {
+        this.props.history.push("/profile");
+    }
     render() {
         return (
             <div>
-                <Header searchBarEnable="true" clickLogout={this.logoutHandler}></Header>
+                <Header searchBarEnable="true" searchEnable="true" clickLogout={this.logoutHandler} clickProfile={this.profilePageHandler}></Header>
                 <div className="container">
                     <Card></Card>
                     <Card></Card>
