@@ -24,14 +24,14 @@ class CardCompnent extends Component {
                                 <img className="profile-pic" src="logo192.png" alt="Profile Pic" />
                             </IconButton>
                         }
-                        title="Shrimp and Chorizo Paella"
-                        subheader="September 14, 2016"
+                        title ={this.props.imageDetails.username}
+                        subheader={new Date(this.props.imageDetails.timestamp).toString()}
                     />
                     <CardContent>
-                        <img className="mediaa" src="logo192.png" alt="Profile Pic" />
+                        <img className="mediaa" src={this.props.imageDetails.media_url} alt="Profile Pic" /><br /><br />
                         <Divider /><br />
                         <Typography variant="body2" color="textSecondary" component="p">
-                            Team of great people at Upgrad
+                            {this.props.imageDetails.caption}
                         </Typography>
                         <Typography variant="body2" component="p" className="hashtag">
                             #greatPeople #upgrad

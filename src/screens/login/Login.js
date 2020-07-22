@@ -25,11 +25,13 @@ class Login extends Component {
     loginHandler = () => {
         let username = "admin";
         let password = "admin";
+        let accessToken = "IGQVJVaE5mSzdWUldtNzZADZADJJTjFsOXI2RGRaNkZArRFpWdVdxWjR6SHFyTlVhdWR2OWpTTTR2YmVGbHJwMi00cG1TenJYajB3Y1FENlZA1ZAnRINkxFeEV6RWhUaFh2dFduZAnloSVFyMWlBSGxSYmtXMgZDZD";
         //Username and password validations
         if (this.state.username === username && this.state.password === password) {
             this.setState({ incorrectCredintials: 'displayNone' })
             this.setState({ userNameRequired: 'displayNone' })
             this.setState({ passwordRequired: 'displayNone' })
+            sessionStorage.setItem("access-token", accessToken);
             this.props.history.push("/home");
         } else {
             if (this.state.username === '' || this.state.password === '') {
