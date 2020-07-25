@@ -1,0 +1,76 @@
+.info-profilePic{
+    height: 150px;
+    width: 150px;
+}
+.container{
+    margin-left: 5%;
+    margin-top: 10px;
+    width: 90%;   
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.info-Profile{
+    margin-left: 10%;
+    width: 80%;  
+    display: flex;
+
+}
+.info-middle{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.info-details{
+    width: 50%;
+    margin-top: 50px;
+    margin-left: 5%;
+}
+.fullName{
+    display: flex;
+}
+.editBtn{
+    border-radius: 50%;
+    margin-left: 5px;
+    background-color:#e91640;
+    color: white;
+    border: 0;
+    outline: none;
+
+}
+.profile-images{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow: hidden;
+}
+.image-grid{
+    background-color: gray;
+}
+
+.modal-image{
+    width: 400px;
+    height: 250px;
+    margin-right: 20px;
+}
+.modal-content{
+    width: 500px;
+}
+.modalImage{
+    width: 100%;
+    height: 350px;
+}
+.profilePage-pic{
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+}
+.profile{
+    display: inline-flex;
+    margin-bottom: 10px;
+}
+.comments{
+    width: 100%;
+    height: 200px;
+}

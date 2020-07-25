@@ -29,13 +29,15 @@ class Header extends Component {
         return (
             <div>
                 <header className="app-header">
-                    <span className="app-logo">Image Viewer</span>
-                    {this.props.searchBarEnable === "true" ?
+                    <span className={this.props.logoClass} onClick={this.props.clickHome}>Image Viewer</span>
+                    {(this.props.page === "home")||(this.props.page === "profile") ?
                         <div className="search-container">
-                            <div className="search-bar">
-                                <SearchIcon className="searchIcon"></SearchIcon>
-                                <Input className="search" id="username" type="text" username="username" placeholder="Search..." disableUnderline={true}></Input>
-                            </div>
+                            {this.props.page === "home" ?
+                                <div className="search-bar">
+                                    <SearchIcon className="searchIcon"></SearchIcon>
+                                    <Input className="search" id="username" type="text" username="username" placeholder="Search..." disableUnderline={true}></Input>
+                                </div> : ""
+                            }
                             <IconButton color="primary" onClick={this.clickHandle}>
                                 <img className="profile-pic" src="logo192.png" alt="Profile Pic" />
                             </IconButton>
@@ -45,10 +47,13 @@ class Header extends Component {
                                 keepMounted
                                 open={this.state.OpenMenu}
                                 onClose={this.handleClose}
-
                             >
-                                <MenuItem onClick={this.handleClose}>My Account</MenuItem>
-                                <Divider variant="middle" />
+                                {this.props.page === "home" ?
+                                    <div>
+                                        <MenuItem onClick={this.props.clickProfile}>My Account</MenuItem>
+                                        <Divider variant="middle" />
+                                    </div> : ""
+                                }
                                 <MenuItem onClick={this.props.clickLogout}>Logout</MenuItem>
                             </Menu>
                         </div> : ""
