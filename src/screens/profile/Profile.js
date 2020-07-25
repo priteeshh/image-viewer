@@ -10,6 +10,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+
 
 
 
@@ -20,7 +24,18 @@ const customStyles = {
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+    }
+};
+const imageCustomStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        display: 'flex'
     }
 };
 // const tileData = [
@@ -64,12 +79,14 @@ class Profile extends Component {
     constructor() {
         super();
         this.state = {
-            modalIsOpen: false,
+            editModalisOpen: false,
+            imageModalisOpen: false,
             fullname: 'Preeteesh Remalli',
             username: '',
             media_count: 0,
             profile: [],
             images: [],
+            selectedImage: {},
             updateFullName: ''
 
         };
@@ -81,11 +98,16 @@ class Profile extends Component {
         this.props.history.push("/home");
     }
     closeModalHandler = () => {
-        this.setState({ modalIsOpen: false });
+        this.setState({ editModalisOpen: false });
     }
     modalHandler = () => {
         this.setState({
-            modalIsOpen: true
+            editModalisOpen: true
+        });
+    }
+    closeImageModalHandler = () => {
+        this.setState({
+            imageModalisOpen: false
         });
     }
     changeHandler = (e) => {
@@ -94,7 +116,16 @@ class Profile extends Component {
     fullNameChangeHandler = () => {
         this.setState({
             fullname: this.state.updateFullName,
-            modalIsOpen: false
+            editModalisOpen: false
+        })
+    }
+    imageClickHandler = (e) => {
+        let Image = this.state.images.filter((image) => {
+            return image.id === e.target.id
+        })[0];
+        this.setState({
+            imageModalisOpen: true,
+            selectedImage: Image
         })
     }
     componentDidMount() {
@@ -112,9 +143,6 @@ class Profile extends Component {
                         media_count: responseData.media_count
                     }
                 })
-
-
-
             }
         });
         //Get Request for API
@@ -179,8 +207,8 @@ class Profile extends Component {
                     <div className="profile-images">
                         <GridList cellHeight={350} cols={3}>
                             {this.state.images.map((image) => (
-                                <GridListTile key={image.id} cols={image.cols || 1}>
-                                    <img className="image-grid" src={image.media_url} alt={image.id} />
+                                <GridListTile onClick={this.imageClickHandler} key={image.id} cols={image.cols || 1}>
+                                    <img className="image-grid" src={image.media_url} alt={image.id} id={image.id} />
                                 </GridListTile>
                             ))}
                         </GridList>
@@ -190,7 +218,7 @@ class Profile extends Component {
                     </div>
                 </div>
 
-                <Modal ariaHideApp={false} isOpen={this.state.modalIsOpen} contentLabel="Login"
+                <Modal ariaHideApp={false} isOpen={this.state.editModalisOpen} contentLabel="Login"
                     onRequestClose={this.closeModalHandler} style={customStyles}>
                     <Typography variant="h5">
                         Edit
@@ -198,8 +226,41 @@ class Profile extends Component {
                     <FormControl>
                         <InputLabel required htmlFor="fullname">Full name</InputLabel>
                         <Input id="fullname" type="text" fullname={this.state.fullname} onChange={this.changeHandler}></Input>
-                    </FormControl><br/><br/>
+                    </FormControl><br /><br />
                     <Button variant="contained" color="primary" onClick={this.fullNameChangeHandler}>Update</Button>
+                </Modal>
+
+                <Modal ariaHideApp={false} isOpen={this.state.imageModalisOpen} contentLabel="Login"
+                    onRequestClose={this.closeImageModalHandler} style={imageCustomStyles} >
+                    <div className="modal-image">
+                        <img className="modalImage" src={this.state.selectedImage.media_url} alt={this.state.selectedImage.id} />
+                    </div>
+                    <div className="modal-content">
+                        <div className="profile">
+                            <img className="profilePage-pic" src="logo192.png" alt="Profile Pic" />
+                            <Typography variant="h5">
+                                {this.state.profile.username}
+                            </Typography>
+                        </div>
+                        <Divider /><br />
+                        <Typography variant="body2" component="p">
+                            {this.state.selectedImage.caption}
+                        </Typography>
+                        <Typography variant="body2" component="p" className="hashtag">
+                            #greatPeople #upgrad
+                        </Typography>
+                        <div className="comments">
+
+                        </div>
+                        <IconButton><FavoriteBorderIcon /></IconButton>
+                        <div className="comment-Container">
+                            <FormControl>
+                                <InputLabel htmlFor="comment">Add a Comment</InputLabel>
+                                <Input type="text" username="" className="commentText"></Input>
+                            </FormControl><br /><br />
+                            <Button variant="contained" color="primary">Add</Button>
+                        </div>
+                    </div>
                 </Modal>
             </div>
         )
