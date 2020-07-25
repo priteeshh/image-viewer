@@ -39,6 +39,7 @@
 
 }
 .profile-images{
+    margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -46,4 +47,8 @@
 }
 .image-grid{
     background-color: gray;
+}
+.model{
+    width: 200px;
+    height: 500px;
 }
