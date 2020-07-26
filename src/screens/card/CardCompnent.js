@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import Favorite from '@material-ui/icons/Favorite';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -14,6 +15,35 @@ import Divider from '@material-ui/core/Divider';
 
 
 class CardCompnent extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isLiked: false,
+            imageDetails: {}
+        };
+    }
+    likeHandler = (e) => {
+        if(this.state.isLiked){
+            this.setState({
+                isLiked: false,
+                imageDetails:{...this.state.imageDetails,
+                   likes: this.state.imageDetails.likes - 1
+                }
+            })
+        }else{
+            this.setState({
+                isLiked: true,
+                imageDetails:{...this.state.imageDetails,
+                    likes: this.state.imageDetails.likes + 1
+                 }
+            })
+        }
+        console.log(this.state.imageDetails.likes)
+
+    }
+    componentDidMount() {
+        this.setState({ imageDetails: this.props.imageDetails });
+      }
     render() {
         return (
             <div>
@@ -34,9 +64,14 @@ class CardCompnent extends Component {
                             {this.props.imageDetails.caption}
                         </Typography>
                         <Typography variant="body2" component="p" className="hashtag">
-                            #greatPeople #upgrad
+                            {this.props.imageDetails.hashTags}
                         </Typography>
-                        <IconButton><FavoriteBorderIcon /></IconButton>
+                        <div className="likes">
+                            {this.state.isLiked ? <Favorite style={{fill: "red"}} onClick={this.likeHandler}/> : <FavoriteBorderIcon onClick={this.likeHandler}/>}
+                        <Typography variant="body2" component="p" className="likesText">
+                            {this.state.imageDetails.likes} likes
+                        </Typography>
+                        </div>
                         <div className="comment-Container">
                             <FormControl>
                                 <InputLabel htmlFor="comment">Add a Comment</InputLabel>

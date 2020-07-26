@@ -16,3 +16,12 @@
 .commentText{
   width: 370px;
 }
+.likes{
+  display: flex;
+  align-items: center;
+  margin: 15px 15px 15px 0px;
+}
+.likesText{
+  padding-left: 15px;
+}
+
