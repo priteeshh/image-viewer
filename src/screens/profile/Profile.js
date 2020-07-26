@@ -38,43 +38,6 @@ const imageCustomStyles = {
         display: 'flex'
     }
 };
-// const tileData = [
-//     {
-//         img: "logo192.png",
-//         title: 'Image1',
-//         author: 'author',
-//         cols: 2,
-//     },{
-//         img: "logo192.png",
-//         title: 'Image2',
-//         author: 'author',
-//         cols: 2,
-//     },
-//     {
-//         img: "logo192.png",
-//         title: 'Image3',
-//         author: 'author',
-//         cols: 2,
-//     },
-//     {
-//         img: "logo192.png",
-//         title: 'Image4',
-//         author: 'author',
-//         cols: 2,
-//     },
-//     {
-//         img: "logo192.png",
-//         title: 'Image5',
-//         author: 'author',
-//         cols: 2,
-//     },
-//     {
-//         img: "logo192.png",
-//         title: 'Image6',
-//         author: 'author',
-//         cols: 2,
-//     }
-// ];
 class Profile extends Component {
     constructor() {
         super();
@@ -128,6 +91,24 @@ class Profile extends Component {
             selectedImage: Image
         })
     }
+    findHashtags = (text) => {
+        let str = text + "";
+        var result = str.split(' ').filter(v => v.startsWith('#'));
+        return result.join(' ');
+    }
+    removeHashtags = (text) => {
+        console.log(text);
+        if(typeof text !== "undefined"){
+            let str = text + " ";
+            var regexp = new RegExp('#([^\\s]*)', 'g');
+            return str.replace(regexp, '');
+        }else{
+            return "";
+        }  
+    }
+    newRandomNumber = () =>{
+        return Math.floor(Math.random() * (10 - 1 + 1)) + 1; 
+    }
     componentDidMount() {
         let thisComponent = this;
         let xhrUserData = new XMLHttpRequest();
@@ -161,7 +142,9 @@ class Profile extends Component {
                         media_url: imageDetails.media_url,
                         username: imageDetails.username,
                         timestamp: imageDetails.timestamp,
-                        caption: imageDetails.caption
+                        hashTags: thisComponent.findHashtags(imageDetails.caption),
+                        caption: thisComponent.removeHashtags(imageDetails.caption),
+                        likes: thisComponent.newRandomNumber()
                     });
                 });
                 thisComponent.setState({ images: images })
@@ -247,7 +230,7 @@ class Profile extends Component {
                             {this.state.selectedImage.caption}
                         </Typography>
                         <Typography variant="body2" component="p" className="hashtag">
-                            #greatPeople #upgrad
+                            {this.state.selectedImage.hashTags}
                         </Typography>
                         <div className="comments">
 
