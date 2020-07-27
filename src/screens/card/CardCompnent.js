@@ -55,7 +55,7 @@ class CardCompnent extends Component {
                             </IconButton>
                         }
                         title={this.props.imageDetails.username}
-                        subheader={new Date(this.props.imageDetails.timestamp).toString()}
+                        subheader={new Date(this.props.imageDetails.timestamp).toLocaleString()}
                     />
                     <CardContent>
                         <img className="mediaa" src={this.props.imageDetails.media_url} alt="Profile Pic" /><br /><br />
