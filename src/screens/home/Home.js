@@ -12,6 +12,7 @@ class Home extends Component {
         };
     }
     logoutHandler = () => {
+        sessionStorage.clear();
         this.props.history.push("/");
     }
     profilePageHandler = () => {
@@ -24,45 +25,49 @@ class Home extends Component {
     }
     removeHashtags = (text) => {
         console.log(text);
-        if(typeof text !== "undefined"){
+        if (typeof text !== "undefined") {
             let str = text + " ";
             var regexp = new RegExp('#([^\\s]*)', 'g');
             return str.replace(regexp, '');
-        }else{
+        } else {
             return "";
-        }  
+        }
     }
-    newRandomNumber = () =>{
-        return Math.floor(Math.random() * (10 - 1 + 1)) + 1; 
+    newRandomNumber = () => {
+        return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
     }
     componentDidMount() {
-        let thisComponent = this;
-
-        let xhrImageData = new XMLHttpRequest();
-        var images = [];
-        xhrImageData.addEventListener('readystatechange', function () {
-            if (this.readyState === 4) {
-                let responseData = JSON.parse(this.response).data;
-                console.log(responseData);
-                thisComponent.newRandomNumber()
-                responseData.forEach(imageDetails => {
-                    images.push({
-                        id: imageDetails.id,
-                        media_url: imageDetails.media_url,
-                        username: imageDetails.username,
-                        timestamp: imageDetails.timestamp,
-                        hashTags: thisComponent.findHashtags(imageDetails.caption),
-                        caption: thisComponent.removeHashtags(imageDetails.caption),
-                        likes: thisComponent.newRandomNumber()
+        let accessToken = sessionStorage.getItem("accessToken");
+        console.log(this.props.api);
+        if (accessToken === null) {
+            this.props.history.push("/");
+        } else {
+            let thisComponent = this;
+            let xhrImageData = new XMLHttpRequest();
+            var images = [];
+            xhrImageData.addEventListener('readystatechange', function () {
+                if (this.readyState === 4) {
+                    let responseData = JSON.parse(this.response).data;
+                    console.log(responseData);
+                    thisComponent.newRandomNumber()
+                    responseData.forEach(imageDetails => {
+                        images.push({
+                            id: imageDetails.id,
+                            media_url: imageDetails.media_url,
+                            username: imageDetails.username,
+                            timestamp: imageDetails.timestamp,
+                            hashTags: thisComponent.findHashtags(imageDetails.caption),
+                            caption: thisComponent.removeHashtags(imageDetails.caption),
+                            likes: thisComponent.newRandomNumber()
+                        });
                     });
-                });
-                thisComponent.setState({ images: images })
-                console.log(thisComponent.state.images);
-            }
-        });
-        //Get Request for Media
-        xhrImageData.open('GET', 'https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,caption,timestamp&access_token=IGQVJYcXNneUpFbFNRZAVIwTXBvdUVoaUJ2aldHVzVIcXQxa2pqenFxTUFmX3UxMnh4OUJ0bm9feG5hQjVuSTVmYUZA4bGhOcGF1T3RsUmlhZADB4SDZAuN3hMMUdSRlp3RnZAfbFNKWVJvYXZANNmM2Y2dsTwZDZD');
-        xhrImageData.send();
+                    thisComponent.setState({ images: images })
+                }
+            });
+            //Get Request for Media
+            xhrImageData.open('GET', thisComponent.props.api.mediaURL + accessToken);
+            xhrImageData.send();
+        }
     }
     render() {
         return (

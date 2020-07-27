@@ -30,7 +30,7 @@ class Header extends Component {
             <div>
                 <header className="app-header">
                     <span className={this.props.logoClass} onClick={this.props.clickHome}>Image Viewer</span>
-                    {(this.props.page === "home")||(this.props.page === "profile") ?
+                    {(this.props.page === "home") || (this.props.page === "profile") ?
                         <div className="search-container">
                             {this.props.page === "home" ?
                                 <div className="search-bar">

@@ -12,10 +12,7 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-
-
-
+import Favorite from '@material-ui/icons/Favorite';
 
 const customStyles = {
     content: {
@@ -55,6 +52,7 @@ class Profile extends Component {
         };
     }
     logoutHandler = () => {
+        sessionStorage.clear();
         this.props.history.push("/");
     }
     homeHandler = (e) => {
@@ -70,7 +68,8 @@ class Profile extends Component {
     }
     closeImageModalHandler = () => {
         this.setState({
-            imageModalisOpen: false
+            imageModalisOpen: false,
+            isLiked: false
         });
     }
     changeHandler = (e) => {
@@ -88,8 +87,11 @@ class Profile extends Component {
         })[0];
         this.setState({
             imageModalisOpen: true,
-            selectedImage: Image
+            selectedImage: { ...Image, likes: this.newRandomNumber() }
         })
+    }
+    newRandomNumber = () => {
+        return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
     }
     findHashtags = (text) => {
         let str = text + "";
@@ -98,61 +100,87 @@ class Profile extends Component {
     }
     removeHashtags = (text) => {
         console.log(text);
-        if(typeof text !== "undefined"){
+        if (typeof text !== "undefined") {
             let str = text + " ";
             var regexp = new RegExp('#([^\\s]*)', 'g');
             return str.replace(regexp, '');
-        }else{
+        } else {
             return "";
-        }  
+        }
     }
-    newRandomNumber = () =>{
-        return Math.floor(Math.random() * (10 - 1 + 1)) + 1; 
+    newRandomNumber = () => {
+        return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+    }
+    likeHandler = (e) => {
+        if (this.state.isLiked) {
+            this.setState({
+                isLiked: false,
+                selectedImage: {
+                    ...this.state.selectedImage,
+                    likes: this.state.selectedImage.likes - 1
+                }
+            })
+        } else {
+            this.setState({
+                isLiked: true,
+                selectedImage: {
+                    ...this.state.selectedImage,
+                    likes: this.state.selectedImage.likes + 1
+                }
+            })
+        }
+        console.log(this.state.selectedImage.likes)
+
     }
     componentDidMount() {
-        let thisComponent = this;
-        let xhrUserData = new XMLHttpRequest();
-        //Instagram API for a logged in user to fetch user details
-        xhrUserData.addEventListener('readystatechange', function () {
-            if (this.readyState === 4) {
-                let responseData = JSON.parse(this.response);
-                console.log(responseData.username)
-                thisComponent.setState({ username: responseData.username })
-                thisComponent.setState({
-                    profile: {
-                        username: responseData.username,
-                        media_count: responseData.media_count
-                    }
-                })
-            }
-        });
-        //Get Request for API
-        xhrUserData.open('GET', 'https://graph.instagram.com/me?fields=id,username,media_count,account_type&access_token=IGQVJYcXNneUpFbFNRZAVIwTXBvdUVoaUJ2aldHVzVIcXQxa2pqenFxTUFmX3UxMnh4OUJ0bm9feG5hQjVuSTVmYUZA4bGhOcGF1T3RsUmlhZADB4SDZAuN3hMMUdSRlp3RnZAfbFNKWVJvYXZANNmM2Y2dsTwZDZD');
-        xhrUserData.send();
+        let accessToken = sessionStorage.getItem("accessToken");
+        if (accessToken === null) {
+            this.props.history.push("/");
+        } else {
+            let thisComponent = this;
+            let xhrUserData = new XMLHttpRequest();
+            //Instagram API for a logged in user to fetch user details
+            xhrUserData.addEventListener('readystatechange', function () {
+                if (this.readyState === 4) {
+                    let responseData = JSON.parse(this.response);
+                    console.log(responseData.username)
+                    thisComponent.setState({ username: responseData.username })
+                    thisComponent.setState({
+                        profile: {
+                            username: responseData.username,
+                            media_count: responseData.media_count
+                        }
+                    })
+                }
+            });
+            //Get Request for API
+            xhrUserData.open('GET', thisComponent.props.api.profileURL + accessToken);
+            xhrUserData.send();
 
-        let xhrImageData = new XMLHttpRequest();
-        var images = [];
-        xhrImageData.addEventListener('readystatechange', function () {
-            if (this.readyState === 4) {
-                let responseData = JSON.parse(this.response).data;
-                console.log(responseData);
-                responseData.forEach(imageDetails => {
-                    images.push({
-                        id: imageDetails.id,
-                        media_url: imageDetails.media_url,
-                        username: imageDetails.username,
-                        timestamp: imageDetails.timestamp,
-                        hashTags: thisComponent.findHashtags(imageDetails.caption),
-                        caption: thisComponent.removeHashtags(imageDetails.caption),
-                        likes: thisComponent.newRandomNumber()
+            let xhrImageData = new XMLHttpRequest();
+            var images = [];
+            xhrImageData.addEventListener('readystatechange', function () {
+                if (this.readyState === 4) {
+                    let responseData = JSON.parse(this.response).data;
+                    console.log(responseData);
+                    responseData.forEach(imageDetails => {
+                        images.push({
+                            id: imageDetails.id,
+                            media_url: imageDetails.media_url,
+                            username: imageDetails.username,
+                            timestamp: imageDetails.timestamp,
+                            hashTags: thisComponent.findHashtags(imageDetails.caption),
+                            caption: thisComponent.removeHashtags(imageDetails.caption),
+                            likes: thisComponent.newRandomNumber()
+                        });
                     });
-                });
-                thisComponent.setState({ images: images })
-            }
-        });
-        //Get Request for Media
-        xhrImageData.open('GET', 'https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,caption,timestamp&access_token=IGQVJYcXNneUpFbFNRZAVIwTXBvdUVoaUJ2aldHVzVIcXQxa2pqenFxTUFmX3UxMnh4OUJ0bm9feG5hQjVuSTVmYUZA4bGhOcGF1T3RsUmlhZADB4SDZAuN3hMMUdSRlp3RnZAfbFNKWVJvYXZANNmM2Y2dsTwZDZD');
-        xhrImageData.send();
+                    thisComponent.setState({ images: images })
+                }
+            });
+            //Get Request for Media
+            xhrImageData.open('GET', thisComponent.props.api.mediaURL + accessToken);
+            xhrImageData.send();
+        }
     }
     render() {
         return (
@@ -235,7 +263,12 @@ class Profile extends Component {
                         <div className="comments">
 
                         </div>
-                        <IconButton><FavoriteBorderIcon /></IconButton>
+                        <div className="likes">
+                            {this.state.isLiked ? <Favorite style={{ fill: "red" }} onClick={this.likeHandler} /> : <FavoriteBorderIcon onClick={this.likeHandler} />}
+                            <Typography variant="body2" component="p" className="likesText">
+                                {this.state.selectedImage.likes} likes
+                        </Typography>
+                        </div>
                         <div className="comment-Container">
                             <FormControl>
                                 <InputLabel htmlFor="comment">Add a Comment</InputLabel>

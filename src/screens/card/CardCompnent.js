@@ -23,27 +23,27 @@ class CardCompnent extends Component {
         };
     }
     likeHandler = (e) => {
-        if(this.state.isLiked){
+        if (this.state.isLiked) {
             this.setState({
                 isLiked: false,
-                imageDetails:{...this.state.imageDetails,
-                   likes: this.state.imageDetails.likes - 1
+                imageDetails: {
+                    ...this.state.imageDetails,
+                    likes: this.state.imageDetails.likes - 1
                 }
             })
-        }else{
+        } else {
             this.setState({
                 isLiked: true,
-                imageDetails:{...this.state.imageDetails,
+                imageDetails: {
+                    ...this.state.imageDetails,
                     likes: this.state.imageDetails.likes + 1
-                 }
+                }
             })
         }
-        console.log(this.state.imageDetails.likes)
-
     }
     componentDidMount() {
         this.setState({ imageDetails: this.props.imageDetails });
-      }
+    }
     render() {
         return (
             <div>
@@ -54,7 +54,7 @@ class CardCompnent extends Component {
                                 <img className="profile-pic" src="logo192.png" alt="Profile Pic" />
                             </IconButton>
                         }
-                        title ={this.props.imageDetails.username}
+                        title={this.props.imageDetails.username}
                         subheader={new Date(this.props.imageDetails.timestamp).toString()}
                     />
                     <CardContent>
@@ -67,9 +67,9 @@ class CardCompnent extends Component {
                             {this.props.imageDetails.hashTags}
                         </Typography>
                         <div className="likes">
-                            {this.state.isLiked ? <Favorite style={{fill: "red"}} onClick={this.likeHandler}/> : <FavoriteBorderIcon onClick={this.likeHandler}/>}
-                        <Typography variant="body2" component="p" className="likesText">
-                            {this.state.imageDetails.likes} likes
+                            {this.state.isLiked ? <Favorite style={{ fill: "red" }} onClick={this.likeHandler} /> : <FavoriteBorderIcon onClick={this.likeHandler} />}
+                            <Typography variant="body2" component="p" className="likesText">
+                                {this.state.imageDetails.likes} likes
                         </Typography>
                         </div>
                         <div className="comment-Container">
