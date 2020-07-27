@@ -188,7 +188,7 @@ class Profile extends Component {
                 <Header page="profile" logoClass="app-logo-profile" clickLogout={this.logoutHandler} clickHome={this.homeHandler}></Header>
                 <div className="container">
                     <div className="info-Profile">
-                        <img className="info-profilePic" src="logo192.png" alt="Profile Pic" />
+                        <img className="info-profilePic" src="profile_pic.png" alt="Profile Pic" />
                         <div className="info-details">
                             <Typography variant="h5">
                                 {this.state.profile.username}
@@ -248,7 +248,7 @@ class Profile extends Component {
                     </div>
                     <div className="modal-content">
                         <div className="profile">
-                            <img className="profilePage-pic" src="logo192.png" alt="Profile Pic" />
+                            <img className="profilePage-pic" src="profile_pic.png" alt="Profile Pic" />
                             <Typography variant="h5">
                                 {this.state.profile.username}
                             </Typography>

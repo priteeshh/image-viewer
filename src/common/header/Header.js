@@ -6,6 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
+import Avatar from '@material-ui/core/Avatar';
 
 
 class Header extends Component {
@@ -39,7 +40,7 @@ class Header extends Component {
                                 </div> : ""
                             }
                             <IconButton color="primary" onClick={this.clickHandle}>
-                                <img className="profile-pic" src="logo192.png" alt="Profile Pic" />
+                            <Avatar className="profile-pic" src="profile_pic.png" alt="Profile Pic" />
                             </IconButton>
                             <Menu
                                 id="simple-menu"
