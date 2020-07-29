@@ -25,13 +25,14 @@ class Login extends Component {
     loginHandler = () => {
         let username = "admin";
         let password = "admin";
-        let accessToken = "IGQVJVaE5mSzdWUldtNzZADZADJJTjFsOXI2RGRaNkZArRFpWdVdxWjR6SHFyTlVhdWR2OWpTTTR2YmVGbHJwMi00cG1TenJYajB3Y1FENlZA1ZAnRINkxFeEV6RWhUaFh2dFduZAnloSVFyMWlBSGxSYmtXMgZDZD";
+        let accessToken = "IGQVJYcXNneUpFbFNRZAVIwTXBvdUVoaUJ2aldHVzVIcXQxa2pqenFxTUFmX3UxMnh4OUJ0bm9feG5hQjVuSTVmYUZA4bGhOcGF1T3RsUmlhZADB4SDZAuN3hMMUdSRlp3RnZAfbFNKWVJvYXZANNmM2Y2dsTwZDZD";
         //Username and password validations
         if (this.state.username === username && this.state.password === password) {
             this.setState({ incorrectCredintials: 'displayNone' })
             this.setState({ userNameRequired: 'displayNone' })
             this.setState({ passwordRequired: 'displayNone' })
-            sessionStorage.setItem("access-token", accessToken);
+            sessionStorage.setItem("accessToken", accessToken);
+            console.log(sessionStorage.getItem("accessToken"));
             this.props.history.push("/home");
         } else {
             if (this.state.username === '' || this.state.password === '') {
@@ -53,7 +54,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Header logoClass = "app-logo-home"></Header>
+                <Header logoClass="app-logo-home"></Header>
                 <div className="login">
                     <div className="login-card">
                         <Card className="form-control">

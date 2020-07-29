@@ -12,10 +12,7 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-
-
-
+import Favorite from '@material-ui/icons/Favorite';
 
 const customStyles = {
     content: {
@@ -54,25 +51,33 @@ class Profile extends Component {
 
         };
     }
+    //Logout handler
     logoutHandler = () => {
+        sessionStorage.clear();
         this.props.history.push("/");
     }
+    //Navigate to Home Page
     homeHandler = (e) => {
         this.props.history.push("/home");
     }
+    //Close edit Modal
     closeModalHandler = () => {
         this.setState({ editModalisOpen: false });
     }
+    //Show edit popup
     modalHandler = () => {
         this.setState({
             editModalisOpen: true
         });
     }
+    //close Image details modal
     closeImageModalHandler = () => {
         this.setState({
-            imageModalisOpen: false
+            imageModalisOpen: false,
+            isLiked: false
         });
     }
+    //Edit change handler
     changeHandler = (e) => {
         e.target.id === 'fullname' && this.setState({ updateFullName: e.target.value })
     }
@@ -82,77 +87,109 @@ class Profile extends Component {
             editModalisOpen: false
         })
     }
+    //Function to handle the Image details on click of Image
     imageClickHandler = (e) => {
         let Image = this.state.images.filter((image) => {
             return image.id === e.target.id
         })[0];
         this.setState({
             imageModalisOpen: true,
-            selectedImage: Image
+            selectedImage: { ...Image, likes: this.newRandomNumber() }
         })
     }
+    //Function to generate random number
+    newRandomNumber = () => {
+        return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+    }
+    //Function to find all hashtags from caption
     findHashtags = (text) => {
         let str = text + "";
         var result = str.split(' ').filter(v => v.startsWith('#'));
         return result.join(' ');
     }
+    //Function to remove all hashtages from caption
     removeHashtags = (text) => {
         console.log(text);
-        if(typeof text !== "undefined"){
+        if (typeof text !== "undefined") {
             let str = text + " ";
             var regexp = new RegExp('#([^\\s]*)', 'g');
             return str.replace(regexp, '');
-        }else{
+        } else {
             return "";
-        }  
+        }
     }
-    newRandomNumber = () =>{
-        return Math.floor(Math.random() * (10 - 1 + 1)) + 1; 
+    //Function to handle like and unlike feature
+    likeHandler = (e) => {
+        if (this.state.isLiked) {
+            this.setState({
+                isLiked: false,
+                selectedImage: {
+                    ...this.state.selectedImage,
+                    likes: this.state.selectedImage.likes - 1
+                }
+            })
+        } else {
+            this.setState({
+                isLiked: true,
+                selectedImage: {
+                    ...this.state.selectedImage,
+                    likes: this.state.selectedImage.likes + 1
+                }
+            })
+        }
+        console.log(this.state.selectedImage.likes)
+
     }
     componentDidMount() {
-        let thisComponent = this;
-        let xhrUserData = new XMLHttpRequest();
-        //Instagram API for a logged in user to fetch user details
-        xhrUserData.addEventListener('readystatechange', function () {
-            if (this.readyState === 4) {
-                let responseData = JSON.parse(this.response);
-                console.log(responseData.username)
-                thisComponent.setState({ username: responseData.username })
-                thisComponent.setState({
-                    profile: {
-                        username: responseData.username,
-                        media_count: responseData.media_count
-                    }
-                })
-            }
-        });
-        //Get Request for API
-        xhrUserData.open('GET', 'https://graph.instagram.com/me?fields=id,username,media_count,account_type&access_token=IGQVJYcXNneUpFbFNRZAVIwTXBvdUVoaUJ2aldHVzVIcXQxa2pqenFxTUFmX3UxMnh4OUJ0bm9feG5hQjVuSTVmYUZA4bGhOcGF1T3RsUmlhZADB4SDZAuN3hMMUdSRlp3RnZAfbFNKWVJvYXZANNmM2Y2dsTwZDZD');
-        xhrUserData.send();
+        let accessToken = sessionStorage.getItem("accessToken");
+        if (accessToken === null) {
+            this.props.history.push("/");
+        } else {
+            let thisComponent = this;
+            let xhrUserData = new XMLHttpRequest();
+            //Instagram API for a logged in user to fetch user details
+            xhrUserData.addEventListener('readystatechange', function () {
+                if (this.readyState === 4) {
+                    let responseData = JSON.parse(this.response);
+                    console.log(responseData.username)
+                    thisComponent.setState({ username: responseData.username })
+                    thisComponent.setState({
+                        profile: {
+                            username: responseData.username,
+                            media_count: responseData.media_count
+                        }
+                    })
+                }
+            });
+            //Get Request for API
+            xhrUserData.open('GET', thisComponent.props.api.profileURL + accessToken);
+            xhrUserData.send();
 
-        let xhrImageData = new XMLHttpRequest();
-        var images = [];
-        xhrImageData.addEventListener('readystatechange', function () {
-            if (this.readyState === 4) {
-                let responseData = JSON.parse(this.response).data;
-                console.log(responseData);
-                responseData.forEach(imageDetails => {
-                    images.push({
-                        id: imageDetails.id,
-                        media_url: imageDetails.media_url,
-                        username: imageDetails.username,
-                        timestamp: imageDetails.timestamp,
-                        hashTags: thisComponent.findHashtags(imageDetails.caption),
-                        caption: thisComponent.removeHashtags(imageDetails.caption),
-                        likes: thisComponent.newRandomNumber()
+            let xhrImageData = new XMLHttpRequest();
+            var images = [];
+            //Instagram API for a logged in user to fetch all posts
+            xhrImageData.addEventListener('readystatechange', function () {
+                if (this.readyState === 4) {
+                    let responseData = JSON.parse(this.response).data;
+                    console.log(responseData);
+                    responseData.forEach(imageDetails => {
+                        images.push({
+                            id: imageDetails.id,
+                            media_url: imageDetails.media_url,
+                            username: imageDetails.username,
+                            timestamp: imageDetails.timestamp,
+                            hashTags: thisComponent.findHashtags(imageDetails.caption),
+                            caption: thisComponent.removeHashtags(imageDetails.caption),
+                            likes: thisComponent.newRandomNumber()
+                        });
                     });
-                });
-                thisComponent.setState({ images: images })
-            }
-        });
-        //Get Request for Media
-        xhrImageData.open('GET', 'https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,caption,timestamp&access_token=IGQVJYcXNneUpFbFNRZAVIwTXBvdUVoaUJ2aldHVzVIcXQxa2pqenFxTUFmX3UxMnh4OUJ0bm9feG5hQjVuSTVmYUZA4bGhOcGF1T3RsUmlhZADB4SDZAuN3hMMUdSRlp3RnZAfbFNKWVJvYXZANNmM2Y2dsTwZDZD');
-        xhrImageData.send();
+                    thisComponent.setState({ images: images })
+                }
+            });
+            //Get Request for Media
+            xhrImageData.open('GET', thisComponent.props.api.mediaURL + accessToken);
+            xhrImageData.send();
+        }
     }
     render() {
         return (
@@ -160,7 +197,7 @@ class Profile extends Component {
                 <Header page="profile" logoClass="app-logo-profile" clickLogout={this.logoutHandler} clickHome={this.homeHandler}></Header>
                 <div className="container">
                     <div className="info-Profile">
-                        <img className="info-profilePic" src="logo192.png" alt="Profile Pic" />
+                        <img className="info-profilePic" src="profile_pic.png" alt="Profile Pic" />
                         <div className="info-details">
                             <Typography variant="h5">
                                 {this.state.profile.username}
@@ -220,7 +257,7 @@ class Profile extends Component {
                     </div>
                     <div className="modal-content">
                         <div className="profile">
-                            <img className="profilePage-pic" src="logo192.png" alt="Profile Pic" />
+                            <img className="profilePage-pic" src="profile_pic.png" alt="Profile Pic" />
                             <Typography variant="h5">
                                 {this.state.profile.username}
                             </Typography>
@@ -235,7 +272,12 @@ class Profile extends Component {
                         <div className="comments">
 
                         </div>
-                        <IconButton><FavoriteBorderIcon /></IconButton>
+                        <div className="likes">
+                            {this.state.isLiked ? <Favorite style={{ fill: "red" }} onClick={this.likeHandler} /> : <FavoriteBorderIcon onClick={this.likeHandler} />}
+                            <Typography variant="body2" component="p" className="likesText">
+                                {this.state.selectedImage.likes} likes
+                        </Typography>
+                        </div>
                         <div className="comment-Container">
                             <FormControl>
                                 <InputLabel htmlFor="comment">Add a Comment</InputLabel>
