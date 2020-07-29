@@ -12,18 +12,22 @@ class Home extends Component {
             filterImages: []
         };
     }
+    //Logout Handler
     logoutHandler = () => {
         sessionStorage.clear();
         this.props.history.push("/");
     }
+    //Navigate to Profile Page
     profilePageHandler = () => {
         this.props.history.push("/profile");
     }
+    //Function to get all hashtags from caption
     findHashtags = (text) => {
         let str = text + "";
         var result = str.split(' ').filter(v => v.startsWith('#'));
         return result.join(' ');
     }
+    //Function to remove all hastags from caption 
     removeHashtags = (text) => {
         console.log(text);
         if (typeof text !== "undefined") {
@@ -34,24 +38,27 @@ class Home extends Component {
             return "";
         }
     }
+    //Function to generate random number
     newRandomNumber = () => {
         return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
     }
+    //Finction for search feature
     searchHandler = (e) => {
         console.log(e.target.value);
-        let filterImages = this.state.images.filter( image => {
+        let filterImages = this.state.images.filter(image => {
             return image.caption.toLowerCase().includes(e.target.value.toLowerCase());
-          });
+        });
         this.setState({ filterImages: filterImages })
 
     }
-    searchHandler
     componentDidMount() {
         let accessToken = sessionStorage.getItem("accessToken");
         console.log(this.props.api);
+        //Checks if sessionstorage contains access-token or not
         if (accessToken === null) {
-            this.props.history.push("/");
+            this.props.history.push("/");   // if no access-token navigate to Login Page
         } else {
+            //if access-token presents proceed with service call to get all posts
             let thisComponent = this;
             let xhrImageData = new XMLHttpRequest();
             var images = [];

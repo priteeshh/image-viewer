@@ -51,27 +51,33 @@ class Profile extends Component {
 
         };
     }
+    //Logout handler
     logoutHandler = () => {
         sessionStorage.clear();
         this.props.history.push("/");
     }
+    //Navigate to Home Page
     homeHandler = (e) => {
         this.props.history.push("/home");
     }
+    //Close edit Modal
     closeModalHandler = () => {
         this.setState({ editModalisOpen: false });
     }
+    //Show edit popup
     modalHandler = () => {
         this.setState({
             editModalisOpen: true
         });
     }
+    //close Image details modal
     closeImageModalHandler = () => {
         this.setState({
             imageModalisOpen: false,
             isLiked: false
         });
     }
+    //Edit change handler
     changeHandler = (e) => {
         e.target.id === 'fullname' && this.setState({ updateFullName: e.target.value })
     }
@@ -81,6 +87,7 @@ class Profile extends Component {
             editModalisOpen: false
         })
     }
+    //Function to handle the Image details on click of Image
     imageClickHandler = (e) => {
         let Image = this.state.images.filter((image) => {
             return image.id === e.target.id
@@ -90,14 +97,17 @@ class Profile extends Component {
             selectedImage: { ...Image, likes: this.newRandomNumber() }
         })
     }
+    //Function to generate random number
     newRandomNumber = () => {
         return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
     }
+    //Function to find all hashtags from caption
     findHashtags = (text) => {
         let str = text + "";
         var result = str.split(' ').filter(v => v.startsWith('#'));
         return result.join(' ');
     }
+    //Function to remove all hashtages from caption
     removeHashtags = (text) => {
         console.log(text);
         if (typeof text !== "undefined") {
@@ -108,9 +118,7 @@ class Profile extends Component {
             return "";
         }
     }
-    newRandomNumber = () => {
-        return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-    }
+    //Function to handle like and unlike feature
     likeHandler = (e) => {
         if (this.state.isLiked) {
             this.setState({
@@ -159,6 +167,7 @@ class Profile extends Component {
 
             let xhrImageData = new XMLHttpRequest();
             var images = [];
+            //Instagram API for a logged in user to fetch all posts
             xhrImageData.addEventListener('readystatechange', function () {
                 if (this.readyState === 4) {
                     let responseData = JSON.parse(this.response).data;

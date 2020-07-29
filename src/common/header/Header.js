@@ -18,11 +18,12 @@ class Header extends Component {
             OpenMenu: false,
         };
     }
+    //Handler to show popup on click of Profile Image
     clickHandle = (event) => {
         this.setState({ anchorEl: event.currentTarget })
         this.setState({ OpenMenu: true })
-
     }
+    //Handler to close popup
     handleClose = (event) => {
         this.setState({ OpenMenu: false })
     }
@@ -40,7 +41,7 @@ class Header extends Component {
                                 </div> : ""
                             }
                             <IconButton color="primary" onClick={this.clickHandle}>
-                            <Avatar className="profile-pic" src="profile_pic.png" alt="Profile Pic" />
+                                <Avatar className="profile-pic" src="profile_pic.png" alt="Profile Pic" />
                             </IconButton>
                             <Menu
                                 id="simple-menu"
