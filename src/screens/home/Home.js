@@ -8,7 +8,8 @@ class Home extends Component {
     constructor() {
         super();
         this.state = {
-            images: []
+            images: [],
+            filterImages: []
         };
     }
     logoutHandler = () => {
@@ -36,6 +37,15 @@ class Home extends Component {
     newRandomNumber = () => {
         return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
     }
+    searchHandler = (e) => {
+        console.log(e.target.value);
+        let filterImages = this.state.images.filter( image => {
+            return image.caption.toLowerCase().includes(e.target.value.toLowerCase());
+          });
+        this.setState({ filterImages: filterImages })
+
+    }
+    searchHandler
     componentDidMount() {
         let accessToken = sessionStorage.getItem("accessToken");
         console.log(this.props.api);
@@ -62,6 +72,8 @@ class Home extends Component {
                         });
                     });
                     thisComponent.setState({ images: images })
+                    thisComponent.setState({ filterImages: images })
+
                 }
             });
             //Get Request for Media
@@ -72,9 +84,9 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <Header page="home" logoClass="app-logo-home" clickLogout={this.logoutHandler} clickProfile={this.profilePageHandler}></Header>
+                <Header page="home" logoClass="app-logo-home" clickLogout={this.logoutHandler} clickProfile={this.profilePageHandler} searchHandler={this.searchHandler}></Header>
                 <div className="container">
-                    {this.state.images.map(image => (
+                    {this.state.filterImages.map(image => (
                         <Card imageDetails={image} key={image.id}></Card>
                     )
                     )}

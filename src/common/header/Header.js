@@ -36,7 +36,7 @@ class Header extends Component {
                             {this.props.page === "home" ?
                                 <div className="search-bar">
                                     <SearchIcon className="searchIcon"></SearchIcon>
-                                    <Input className="search" id="username" type="text" username="username" placeholder="Search..." disableUnderline={true}></Input>
+                                    <Input className="search" id="username" type="text" username="username" placeholder="Search..." disableUnderline={true} onChange={this.props.searchHandler}></Input>
                                 </div> : ""
                             }
                             <IconButton color="primary" onClick={this.clickHandle}>
