@@ -28,4 +28,10 @@
   height: 30px;
   width: 30px;
 }
-
+.commentsbold{
+  font-weight: bold;
+}
+.commentList{
+  margin-bottom: 10px;
+  padding: 0;
+}
